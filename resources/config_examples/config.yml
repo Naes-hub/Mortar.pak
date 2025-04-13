@@ -1,0 +1,42 @@
+hosts:
+  - display_name: "Display Name"
+    host_type: ROMM # Valid Choices: ROMM | MEGATHREAD | SMB | APACHE | NGINX | CUSTOM
+    root_uri: "https://domain.tld" # This can be the start of a URL with protocol (e.g. https://), a host name or an IP Address
+
+    port: 445 # Needed by SMB, optional otherwise unless using non-standard ports
+
+    username: "GUEST" # Used by RomM and SMB
+    password: "hunter2" # Used by RomM and SMB
+
+    share_name: "guest" # Used by SMB
+
+    extension_filters: # Used by SMB to hide files with given extensions
+      - ".DS_Store"
+
+    sections: # One or more mappings of host directory to the local filesystem
+      - section_name: "Game Boy" # Name it whatever you want
+        system_tag: "GB" # Must match the tag in the `SDCARD_ROOT/Roms` directories
+        local_directory: "/mnt/SDCARD/Roms/Game Boy (GB)/" # Explicitly set the path. This will be overwritten if `system_tag` is set
+        host_subdirectory: "/files/No-Intro/Nintendo%20-%20Game%20Boy/" # The subdirectory on the host, not used by RomM
+        romm_platform_id: "1" # Used by RomM in place of `host_subdirectory`
+
+        # Define more sections if desired
+
+    filters: # Filter out files that do not contain the filter string
+      - "USA"
+      - "En,"
+
+    table_columns: # Used by CUSTOM hosts. Match each value with the exact text used in the HTML Table
+      filename_header: "File Name"
+      file_size_header: "File Size"
+      date_header: "Date"
+
+    source_replacements: # Used by CUSTOM hosts. If the table contains extra junk (e.g. sort arrows, brackets, etc.) specify them here. They will be removed before parsing the table
+      "[[": "[["
+      "]]": "]]"
+
+  # Define more hosts if desired
+
+show_item_count: false # Shows file count before displaying list
+download_art: true # If true, Mortar will attempt to find box art. If found it will display it and let you indicate if you want it
+log_level: "ERROR" # Optional, defaults to error. Handy when shit breaks
